@@ -10,26 +10,28 @@ import arcjectMiddleware from './middleware/arcjet.middleware.js';
 
 const app = express();
 
-app.use(express.json())
+app.use(express.json());
 
-app.use(express.urlencoded({extended:false}))
+app.use(express.urlencoded({extended:false}));
 
-app.use(cookieParser())
+app.use(cookieParser());
 
 app.use(arcjectMiddleware);
 
-app.use('/api/v1/auth', authRouterRouter)
+app.use('/api/v1/auth', authRouterRouter);
 
-app.use('/api/v1/users', userRouter)
+app.use('/api/v1/users', userRouter);
 
-app.use('/api/v1/subs', subscriptionRouter)
+app.use('/api/v1/subs', subscriptionRouter);
 
 app.use(errorMiddleware);
 
+await dbConnection();
+
 app.listen(PORT,()=>{
     console.log(`This app is running on localhost:${PORT}`)
-})
+});
 
-await dbConnection()
+
 
 export default app

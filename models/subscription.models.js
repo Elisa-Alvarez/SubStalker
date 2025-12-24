@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const subscriptionSchema = new mongoose.Schema({
     name:{
         type: String,
-        requried:[true, 'Subscription name is required'],
+        require:[true, 'Subscription name is required'],
         trim: true,
         minLength:2,
         maxLength: 100,
@@ -20,7 +20,7 @@ const subscriptionSchema = new mongoose.Schema({
     },
     frequency:{
       type:String,
-      enum:['daily','weekly','bi-weekly','monthly','yearly']
+      enum:['daily','weekly','biWeekly','monthly','yearly']
     },
     category:{
         type: String,
@@ -29,7 +29,7 @@ const subscriptionSchema = new mongoose.Schema({
     },
     paymentMethod:{
         type:String,
-        required:[true, 'Payment method is required'],
+        require:[true, 'Payment method is required'],
         trim:true
     },
     status:{
@@ -39,7 +39,7 @@ const subscriptionSchema = new mongoose.Schema({
     },
     startDate:{
         type: Date,
-        required: true,
+        require: true,
         validate: {
             validator: (value) => value <= new Date(),
             message: 'Start date must be in the past'
@@ -58,7 +58,7 @@ const subscriptionSchema = new mongoose.Schema({
     user:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        required:true,
+        require:true,
         index:true,
     }
 },{timestamps:true})
@@ -79,7 +79,7 @@ subscriptionSchema.pre('save', function (next){
     if(this.renewalDate < new Date()){
         this.status = 'expired'
     }
-    next();
+    
 })
 
 const Subscription = new mongoose.model('Subscription', subscriptionSchema);
